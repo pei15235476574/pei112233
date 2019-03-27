@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    const res = {
+        code: 0,
+        data: {
+            lines: '20路,301路,5路,地铁5号线,机场大巴线,107路,机场快轨',
+            lineids: 'lzbd,lwes,lxid,lwic,lwdf,ldfx,loin',
+            linedetails: {
+                lwdf: {
+                    name: '机场大巴线'
+                },
+                lwes: {
+                    name: '301路'
+                },
+                lwic: {
+                    name: '地铁5号线'
+                },
+                ldfx: {
+                    name: '107路'
+                },
+                lzbd: {
+                    name: '20路'
+                },
+                lxid: {
+                    name: '5路'
+                },
+                loin: {
+                    name: '机场快轨'
+                }
+            }
+        }
+    }
+    // // data经过parse函数转化后，变成以下结构
+    // /*
+    // [{
+    // lxid: {
+    // name: '5路'
+    // }
+    // }, {
+    // lzbd: {
+    // name: '20路'
+    // }
+    // }, {
+    // ldfx: {
+    // name: '107路'
+    // }
+    // }, {
+    // lwes: {
+    // name: '301路'
+    // }
+    // }, {
+    // lwic: {
+    // name: '地铁5号线'
+    // }
+    // }, {
+    // loin: {
+    // name: '机场快轨'
+    // }
+    // }, {
+    // lwdf: {
+    // name: '机场大巴线'
+    // }
+    // }]
+
+    // const data = parse(res)
+    function parse(res) {
+        var data = res.data.linedetails;
+        var newArr = [];
+        for (var key in data) {
+            newArr.push({ [key]: data[key] });
+        }
+        console.log(newArr);
+        var num = newArr.filter(item => {
+            //将 item得键值 隐式转换成数字类型  这里用到了 Object.keys() 将对象可枚举属性 返回
+            return !isNaN(parseInt(item[Object.keys(item)].name));
+        }).sort(function (a, b) {
+            return parseInt(a[Object.keys(a)].name) - parseInt(b[Object.keys(b)].name);
+        })
+
+        var ditie = newArr.filter(item => {
+            return item[Object.keys(item)].name.includes('地铁');
+        })
+
+        var feiji = newArr.filter(item => {
+            return item[Object.keys(item)].name.includes('机场');
+        }).sort((a, b) => {
+            return a[Object.keys(a)].name.length - b[Object.keys(b)].name.length;
+        })
+        return [...num, ...ditie, ...feiji];
+    }
+    var data = parse(res);
+    console.log(data);
+
+
+</script>
+
+</html>
